@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    
+    <link rel="stylesheet" href="/assets/app.css">
+    <script src="/assets/app.js"></script>
+</head>
+<body>
+    <div class="container">
+        <h1>Protected File server</h1>
+        <div>
+            <form action="/upload" method="POST" enctype="multipart/form-data">
+                <div class="row">
+                    <input type="file" required accept=".jpg,.jpeg,.png" name="files" multiple="true">
+                </div>
+                <div class="row">
+                    <input type="submit" value="Submit">
+                </div>
+            </form>
+        </div>
+        <hr>
+        <div>
+            <ul>
+                {{range $info := .dirs}}
+                    <li>
+                        {{$info.Name}}
+                    </li>
+                {{end}}
+            </ul>
+        </div>
+        <hr>
+        <div>
+            <ul>
+                {{range $info := .filenames}}
+                    <li>
+                        {{$info.Name}}
+                    </li>
+                {{end}}
+            </ul>
+        </div>
+    </div>
+</body>
+</html>
