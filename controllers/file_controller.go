@@ -13,8 +13,31 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("templates/index.html"))
-	tmpl.Execute(w, nil)
+	tmpl := template.Must(template.ParseFiles("frontend/src/templates/index.html"))
+
+	files, err := ioutil.ReadDir(os.Getenv("ROOT_PATH"))
+	if err != nil {
+		http.Error(w, err.Error(), http.StatusBadRequest)
+	}
+
+	filenames := []os.FileInfo{}
+	dirs := []os.FileInfo{}
+	for _, finfo := range files {
+		if finfo.IsDir() {
+			dirs = append(dirs, finfo)
+			continue
+		}
+		if finfo.Name() == ".lock" {
+			continue
+		}
+
+		filenames = append(filenames, finfo)
+	}
+	params := make(map[string]interface{})
+	params["filenames"] = filenames
+	params["dirs"] = dirs
+	tmpl.Execute(w, params)
+
 }
 
 func Upload(w http.ResponseWriter, r *http.Request) {
