@@ -10,37 +10,53 @@
 </head>
 <body>
     <div class="container">
-        <h1>Protected File server</h1>
-        <div>
-            <form action="/upload" method="POST" enctype="multipart/form-data">
-                <div class="row">
-                    <input type="file" required accept=".jpg,.jpeg,.png" name="files" multiple="true">
+        <form action="/upload" method="POST" enctype="multipart/form-data">
+            <h1>Protected File server</h1>
+            <div class="row">
+                <div class="col-12">
+                   <div class="form-group">
+                     <label for="files">Files to upload</label>
+                     <input type="file" class="form-control-file" name="files" id="files" placeholder="photos" aria-describedby="fileHelpId" multiple required accept=".jpg,.jpeg,.png">
+                     <small id="fileHelpId" class="form-text text-muted">.jpg,.jpeg,.png</small>
+                   </div>
                 </div>
-                <div class="row">
-                    <input type="submit" value="Submit">
+                <div class="col-12">
+                    <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
-            </form>
-        </div>
+            </div>
+        </form>
         <hr>
-        <div>
-            <ul>
-                {{range $info := .dirs}}
-                    <li>
-                        {{$info.Name}}
-                    </li>
-                {{end}}
-            </ul>
+        <div class="row">
+            {{range $info := .dirs}}
+                <div class="col-12 mt-2">
+                    <div class="ffolder small cyan float-left"></div>
+                    <div class="float-left ml-2">
+                        <div class="mt-2">
+                            {{$info.Name}}
+                        </div>
+                        <div class="small">
+                            {{$info.ModTime.Format "2006-01-02"}}
+                        </div>
+                    </div>
+                </div>
+            {{end}}
         </div>
         <hr>
         <div>
             <ul>
                 {{range $info := .filenames}}
                     <li>
-                        {{$info.Name}}
+                        <a href="javascript:void(0)" onclick='showImage({{$info.Name}})'>
+                            {{$info.Name}}
+                        </a>
                     </li>
                 {{end}}
             </ul>
         </div>
+    </div>
+    <div id="img-wrapper" style="display: none;">
+        <span onclick="closeImage()" class="close-img">X</span>
+        <div id="img-holder"></div>
     </div>
 </body>
 </html>

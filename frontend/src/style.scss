@@ -1,1 +1,31 @@
-@import "../node_modules/bootstrap/scss/bootstrap.scss"
+@import "../node_modules/bootstrap/scss/bootstrap.scss";
+@import "./styles/ffolder.scss";
+
+#img-wrapper {
+    width: 100vw;
+    height: 100vh;
+    text-align: center;
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgb(0 0 0 / 25%);
+    
+    span.close-img {
+        cursor: pointer;
+        border: 1px solid black;
+        border-radius: 50% 50%;
+        padding: 1px 4px;
+        color: whitesmoke;
+        background: black;
+    }
+    #img-holder {
+        text-align: center;
+        
+        img {
+            max-width: 85vw !important;
+            max-height: 85vh !important;
+        }
+    }
+}
