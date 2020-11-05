@@ -12,8 +12,9 @@ import (
 func Run() {
 	router := mux.NewRouter()
 
-	router.HandleFunc("/", controllers.Index)
-	router.HandleFunc("/upload", controllers.Upload)
+	router.HandleFunc("/", controllers.Index).Methods(http.MethodGet)
+	router.HandleFunc("/upload", controllers.Upload).Methods(http.MethodPost)
+	router.HandleFunc("/getfile", controllers.GetFile).Methods(http.MethodGet)
 
 	fs := http.FileServer(http.Dir("./frontend/dist/"))
 	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))

@@ -7,9 +7,11 @@ import (
 	"fmt"
 	"html/template"
 	"io/ioutil"
+	"log"
 	"mime/multipart"
 	"net/http"
 	"os"
+	"strings"
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -95,4 +97,34 @@ func uploadMultipartFile(fh multipart.FileHeader, target string) error {
 	}
 
 	return nil
+}
+
+func GetFile(w http.ResponseWriter, r *http.Request) {
+	filename := r.URL.Query().Get("filename")
+	if filename == "" {
+		http.Error(w, "filename is required", http.StatusBadRequest)
+		return
+	}
+	filename = strings.Trim(filename, "/")
+
+	filePath := os.Getenv("ROOT_PATH") + "/" + filename
+	bts, err := file.ReadFile(filePath)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	key := password.GetPassword()
+	fileData, err := crypto.Decrypt(key, bts)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
+	_, err = w.Write(fileData)
+	if err != nil {
+		log.Println(err)
+		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
+	}
 }
