@@ -22,6 +22,10 @@ $(() => {
     const d = getUrlVars()["dir"];
     selectedDir = d ? d : "";
     $('#selected-dir').val(selectedDir);
+
+    if (selectedDir == '') {
+        $('#up-wrapper').hide();
+    }
 });
 
 
