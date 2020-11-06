@@ -4,7 +4,6 @@ import (
 	"fileprotector/services/crypto"
 	"fileprotector/services/file"
 	"fileprotector/services/password"
-	"fmt"
 	"html/template"
 	"io/ioutil"
 	"log"
@@ -17,9 +16,16 @@ import (
 func Index(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("frontend/src/templates/index.html"))
 
-	files, err := ioutil.ReadDir(os.Getenv("ROOT_PATH"))
+	selectedDir := strings.Trim(r.URL.Query().Get("dir"), "/")
+
+	target := os.Getenv("ROOT_PATH")
+	if selectedDir != "" {
+		target += "/" + selectedDir
+	}
+	files, err := ioutil.ReadDir(target)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
+		return
 	}
 
 	filenames := []os.FileInfo{}
@@ -48,7 +54,13 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
-	directoryPath := fmt.Sprintf("%s", os.Getenv("ROOT_PATH"))
+	directoryPath := os.Getenv("ROOT_PATH")
+
+	r.ParseForm()
+	selectedDir := r.FormValue("selectedDir")
+	if selectedDir != "" {
+		directoryPath += "/" + selectedDir
+	}
 	err = os.MkdirAll(directoryPath, os.ModePerm)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -65,7 +77,11 @@ func Upload(w http.ResponseWriter, r *http.Request) {
 	_ = r.MultipartForm.RemoveAll()
 
 	w.Header().Set("content-type", "text/html")
-	_, _ = w.Write([]byte(`<meta http-equiv="refresh" content="1; url = /" />`))
+	if selectedDir == "" {
+		_, _ = w.Write([]byte(`<meta http-equiv="refresh" content="1; url = /" />`))
+	} else {
+		_, _ = w.Write([]byte(`<meta http-equiv="refresh" content="1; url = /?dir=` + selectedDir + `" />`))
+	}
 	_, _ = w.Write([]byte(`files uploaded, redirecting...`))
 }
 

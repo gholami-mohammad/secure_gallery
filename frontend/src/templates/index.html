@@ -11,7 +11,11 @@
 <body>
     <div class="container">
         <form action="/upload" method="POST" enctype="multipart/form-data">
-            <h1>Protected File server</h1>
+            <h1>
+                <a href="/">
+                    Protected File server
+                </a>
+            </h1>
             <div class="row">
                 <div class="col-12">
                    <div class="form-group">
@@ -20,28 +24,33 @@
                      <small id="fileHelpId" class="form-text text-muted">.jpg,.jpeg,.png</small>
                    </div>
                 </div>
+                <input type="hidden" id="selected-dir"  name="selectedDir">
                 <div class="col-12">
                     <button type="submit" class="btn btn-primary">Submit</button>
                 </div>
             </div>
         </form>
         <hr>
+        {{if .dirs}}
         <div class="row">
             {{range $info := .dirs}}
                 <div class="col-12 mt-2">
-                    <div class="ffolder small cyan float-left"></div>
-                    <div class="float-left ml-2">
-                        <div class="mt-2">
-                            {{$info.Name}}
-                        </div>
-                        <div class="small">
-                            {{$info.ModTime.Format "2006-01-02"}}
+                    <div class="d-inline-block pointer" onclick="gotoDirectory({{$info.Name}})">
+                        <div class="ffolder small cyan float-left"></div>
+                        <div class="float-left ml-2">
+                            <div class="mt-2">
+                                {{$info.Name}}
+                            </div>
+                            <div class="small">
+                                {{$info.ModTime.Format "2006-01-02"}}
+                            </div>
                         </div>
                     </div>
                 </div>
             {{end}}
         </div>
         <hr>
+        {{end}}
         <div>
             <ul>
                 {{range $info := .filenames}}
