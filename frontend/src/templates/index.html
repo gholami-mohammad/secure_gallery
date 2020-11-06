@@ -31,8 +31,12 @@
             </div>
         </form>
         <hr>
-        {{if .dirs}}
         <div class="row">
+            <div class="col-12">
+                <a href="javascript:void(0)" onclick="directoryUp()">
+                    Up
+                </a>
+            </div>
             {{range $info := .dirs}}
                 <div class="col-12 mt-2">
                     <div class="d-inline-block pointer" onclick="gotoDirectory({{$info.Name}})">
@@ -50,7 +54,6 @@
             {{end}}
         </div>
         <hr>
-        {{end}}
         <div>
             <ul>
                 {{range $info := .filenames}}

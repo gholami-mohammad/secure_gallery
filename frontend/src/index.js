@@ -45,10 +45,16 @@ window.gotoDirectory = dir => {
     if(selectedDir != "") {
         dir = selectedDir + "/" + dir;
     }
-    let href = window.location.protocol + "//";
-    href += window.location.host;
-    href += "?dir=" + dir;
-    window.location.href = href;
+    window.location.href = "/?dir=" + dir;
+}
+
+window.directoryUp = () => {
+    if(selectedDir === "") {
+       return;
+    }
+    selectedDir.split("/").length
+    selectedDir = selectedDir.slice(0, selectedDir.lastIndexOf("/"));
+    window.location.href = "/?dir=" + selectedDir
 }
 
 $(document).on('keyup',(e) => {
