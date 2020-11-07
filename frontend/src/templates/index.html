@@ -32,11 +32,16 @@
         </form>
         <hr>
         <div class="row">
-            <div class="col-12" id="up-wrapper">
-                <a href="javascript:void(0)" onclick="directoryUp()">
+            <div class="col-12">
+                <a href="javascript:void(0)" onclick="directoryUp()" id="up-wrapper">
                     Up
                 </a>
+                <a href="javascript:void(0)" onclick="newFolder()" class="ml-2">
+                    New Folder
+                </a>
             </div>
+        </div>
+        <div class="row" id="directories">
             {{range $info := .dirs}}
                 <div class="col-12 mt-2">
                     <div class="d-inline-block pointer" onclick="gotoDirectory({{$info.Name}})">
