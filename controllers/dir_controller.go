@@ -12,6 +12,11 @@ func Mkdir(w http.ResponseWriter, r *http.Request) {
 	name := r.FormValue("name")
 	name = strings.Trim(name, "/")
 
+	if name == "" {
+		http.Error(w, "directory name is required", http.StatusUnprocessableEntity)
+		return
+	}
+
 	directoryPath := os.Getenv("ROOT_PATH")
 	target := directoryPath + "/" + name
 	if _, err := os.Stat(target); err == nil {
