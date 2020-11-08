@@ -151,3 +151,29 @@ window.newFolder = () => {
 
     registerEventlisteners();
 };
+
+window.deleteItem = (path) => {
+    path = selectedDir + "/" + path;
+    const cnf = window.confirm("Are you sure to delete the selected file/directory?\nThis action can't be undone.");
+    if(!cnf) {
+        return;
+    }
+
+    loading = true;
+    $.ajax({
+        url: '/del?path=' + path,
+        method: 'delete',
+        success: res => {
+            loading = false;
+            alert(res);
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000) 
+        },
+        error: err => {
+            loading = false;
+            alert(err.responseText)
+        },
+    });
+
+};

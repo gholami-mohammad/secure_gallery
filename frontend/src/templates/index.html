@@ -44,6 +44,9 @@
         <div class="row" id="directories">
             {{range $info := .dirs}}
                 <div class="col-12 mt-2">
+                    <div class="float-left mr-2">
+                        <a href="javascript:void(0)" class="delete" onclick="deleteItem({{$info.Name}})" title="delete">x</a>
+                    </div>
                     <div class="d-inline-block pointer" onclick="gotoDirectory({{$info.Name}})">
                         <div class="ffolder small cyan float-left"></div>
                         <div class="float-left ml-2">
@@ -63,6 +66,7 @@
             <ul>
                 {{range $info := .filenames}}
                     <li>
+                        <a href="javascript:void(0)" class="delete" onclick="deleteItem({{$info.Name}})" title="delete">x</a>
                         <a href="javascript:void(0)" onclick='showImage({{$info.Name}})'>
                             {{$info.Name}}
                         </a>
