@@ -119,6 +119,7 @@ window.saveNewFolder = () => {
         },
         error: err => {
             loading = false;
+            alert(err.responseText)
         },
     });
 };
