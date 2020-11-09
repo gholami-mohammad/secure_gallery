@@ -4,7 +4,8 @@
   "description": "",
   "private": true,
   "scripts": {
-    "build": "NODE_ENV=production webpack"
+    "build": "NODE_ENV=production webpack",
+    "watch": "NODE_ENV=production webpack --watch"
   },
   "author": "Mohammad Gholami",
   "license": "MIT",
