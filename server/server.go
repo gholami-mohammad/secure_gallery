@@ -18,7 +18,7 @@ func Run() {
 	router.HandleFunc("/mkdir", controllers.Mkdir).Methods(http.MethodPost)
 	router.HandleFunc("/del", controllers.DeletePath).Methods(http.MethodDelete)
 
-	fs := http.FileServer(http.Dir("./frontend/dist/"))
+	fs := http.FileServer(http.Dir("./assets/dist"))
 	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))
 
 	fmt.Println("server started at: http://127.0.0.1:1313")

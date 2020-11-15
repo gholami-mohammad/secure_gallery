@@ -2,5 +2,5 @@
 *.out
 vendor/
 .env
-frontend/dist/
+assets/dist/
 frontend/node_modules/

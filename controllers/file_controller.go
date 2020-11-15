@@ -14,7 +14,7 @@ import (
 )
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("frontend/src/templates/index.html"))
+	tmpl := template.Must(template.ParseFiles("./templates/index.html"))
 
 	selectedDir := strings.Trim(r.URL.Query().Get("dir"), "/")
 
