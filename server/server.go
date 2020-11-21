@@ -17,6 +17,7 @@ func Run() {
 	router.HandleFunc("/getfile", controllers.GetFile).Methods(http.MethodGet)
 	router.HandleFunc("/mkdir", controllers.Mkdir).Methods(http.MethodPost)
 	router.HandleFunc("/del", controllers.DeletePath).Methods(http.MethodDelete)
+	router.HandleFunc("/mv", controllers.Rename).Methods(http.MethodPost)
 
 	fs := http.FileServer(http.Dir("./assets/dist"))
 	router.PathPrefix("/assets/").Handler(http.StripPrefix("/assets/", fs))

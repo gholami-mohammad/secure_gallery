@@ -17,6 +17,17 @@ window.registerEventlisteners = () => {
     $('#pending-dir-name').on('keypress', (e) => {
         return e.which != 13;
     });
+    
+    $('#pending-path-name').on('keyup', (e) => {
+        if(e.keyCode != 13){
+            return;
+        }
+
+        saveRename();
+    });
+    $('#pending-path-name').on('keypress', (e) => {
+        return e.which != 13;
+    });
 };
 
 function getUrlVars()
@@ -99,7 +110,7 @@ window.saveNewFolder = () => {
     if(loading) {
         return;
     }
-    const name = $('#pending-dir-name').text();
+    const name = $('#pending-dir-name').text().trim();
     if (name === "") {
         return;
     }
@@ -177,3 +188,46 @@ window.deleteItem = (path) => {
     });
 
 };
+
+window.rename = (ele) => {
+    $('#pending-path-name').attr("id", "");
+    ele = $(ele);
+    window.oldPathName = ele.text().trim();
+    
+    ele.attr("contentEditable", true);
+    ele.attr("id", "pending-path-name");
+    registerEventlisteners();
+}
+
+window.saveRename = () => {
+    if(loading) {
+        return;
+    }
+    const name = $('#pending-path-name').text().trim();
+    if (name === "") {
+        return;
+    }
+    loading = true;
+    $.ajax({
+        url: '/mv',
+        method: 'post',
+        data: {
+            old_path: selectedDir + "/" + oldPathName,
+            new_path: selectedDir + "/" + name,
+        },
+        success: res => {
+            loading = false;
+            setTimeout(() => {
+                window.location.reload();
+            }, 1000)                    
+        },
+        error: err => {
+            loading = false;
+            if(err.status == 422 ) {
+                $('#pending-path-name').text(window.oldPathName);
+            }
+            
+            alert(err.responseText)
+        },
+    });
+}
